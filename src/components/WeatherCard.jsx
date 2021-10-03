@@ -38,7 +38,7 @@ const useStyles = makeStyles({
 
 })
 
-const WeatherCard = ({ city, geolocation, index, removeCity }) => {
+const WeatherCard = ({ city, geolocation, index, removeCity, alert }) => {
 
     const classes = useStyles();
     const [weatherData, setWeatherData] = useState(null);
@@ -63,8 +63,13 @@ const WeatherCard = ({ city, geolocation, index, removeCity }) => {
     }
 
     const getWeatherDataByCity = async () => {
-        const result = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=55f7264e4bbd2d08f2e907c81b9e2fcf&units=metric&lang=ru`);
-        setWeatherData(result.data);
+        try {
+            const result = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=55f7264e4bbd2d08f2e907c81b9e2fcf&units=metric&lang=ru`);
+            setWeatherData(result.data);
+        } catch(error) {
+            alert(error.message);
+            removeCity(index);
+        }
     }
 
     return <div>

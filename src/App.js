@@ -2,11 +2,13 @@ import './App.css';
 import { useEffect, useState } from 'react';
 import WeatherCard from './components/WeatherCard';
 import WeatherInput from './components/WeatherInput';
+import {Alert} from '@mui/material';
 import {Box, Typography} from '@material-ui/core';
 
 function App() {
 
   const [cities, setCities] = useState([])
+  const [alert, setAlert] = useState(null)
 
   useEffect(
     () => {
@@ -41,16 +43,17 @@ function App() {
     const date = new Date();
     return date.toLocaleString();
   }
-
+  
   return (
     <div className="App">
+      {alert && <Alert severity="error">{alert}</Alert>}
       <Box>
           <Typography style={{color: '#ff6000'}} variant='subtitle1' align='left'>{getCurrentDate()}</Typography>
       </Box>
       <WeatherInput addCity={addCity} />
       <WeatherCard geolocation={true} />
       {cities.map((city, index) => {
-        return <>{city && <WeatherCard key={index} index={index} city={city} removeCity={removeCity} />}</>
+        return <>{city && <WeatherCard key={index} index={index} city={city} removeCity={removeCity} alert={setAlert} />}</>
       })}
     </div>
   );
