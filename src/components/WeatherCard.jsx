@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Card, makeStyles, CardContent, CircularProgress, Box, Typography } from '@material-ui/core';
+import { Card, makeStyles, CardContent, CircularProgress, Box, Typography, Button } from '@material-ui/core';
 
 const useStyles = makeStyles({
     card: {
         maxWidth: '350px'
+    },
+    top: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: '40px'
     },
     img: {
         width: '45px',
@@ -14,12 +20,8 @@ const useStyles = makeStyles({
         display: 'flex',
         alignItems: 'center'
     },
-    date: {
-        color: '#ff6000'
-    },
     location: {
         fontWeight: 'bold',
-        marginBottom: '40px'
     },
     feels: {
         fontWeight: 'bold'
@@ -36,7 +38,7 @@ const useStyles = makeStyles({
 
 })
 
-const WeatherCard = ({ city, geolocation }) => {
+const WeatherCard = ({ city, geolocation, index, removeCity }) => {
 
     const classes = useStyles();
     const [weatherData, setWeatherData] = useState(null);
@@ -65,26 +67,13 @@ const WeatherCard = ({ city, geolocation }) => {
         setWeatherData(result.data);
     }
 
-    // const getWeatherData = async (currentPosition) => {
-    //     console.log(currentPosition);
-    //     const result = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${currentPosition.coords.latitude}&lon=${currentPosition.coords.longitude}&appid=55f7264e4bbd2d08f2e907c81b9e2fcf&units=metric&lang=ru`);
-    //     setWeatherData(result.data);
-    // }
-
-    const getCurrentDate = () => {
-        const date = new Date();
-        return date.toLocaleString();
-    }
-
     return <div>
         {weatherData
             ? <Card className={classes.card}>
                 <CardContent>
-                    <Box>
-                        <Typography className={classes.date} variant='subtitle1' align='left'>{getCurrentDate()}</Typography>
-                    </Box>
-                    <Box>
+                    <Box className={classes.top}>
                         <Typography className={classes.location} variant='h5' align='left'>{weatherData.name}, {weatherData.sys.country}</Typography>
+                        {!geolocation && <Button onClick={()=>{removeCity(index)}}>X</Button>}
                     </Box>
                     <Box>
                         <Typography className={classes.header} variant='h4' align='left'><img className={classes.img} src={`http://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`} /> {weatherData.main.temp.toFixed()}&#8451;</Typography>

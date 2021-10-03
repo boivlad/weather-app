@@ -8,6 +8,7 @@ const WeatherInput = (props) => {
     const inputHandler = (event) => {
         event.preventDefault();
         props.addCity(weatherInput);
+        setWeatherInput("");
     }
 
     const onChange = (event) => {
