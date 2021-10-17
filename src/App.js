@@ -2,8 +2,10 @@ import './App.css';
 import { useEffect, useState } from 'react';
 import WeatherCard from './components/WeatherCard';
 import WeatherInput from './components/WeatherInput';
-import {Alert} from '@mui/material';
-import {Box, Typography} from '@material-ui/core';
+import {Alert, IconButton} from '@mui/material';
+import {Box, Collapse, Typography} from '@material-ui/core';
+import CloseIcon from '@mui/icons-material/Close';
+
 
 function App() {
 
@@ -46,15 +48,19 @@ function App() {
   
   return (
     <div className="App">
-      {alert && <Alert severity="error">{alert}</Alert>}
+      <Collapse in={!!alert}>
+        <Alert action={<IconButton onClick={()=>{setAlert(null)}} size="small"><CloseIcon/></IconButton>} severity="error">{alert}</Alert>
+      </Collapse>
       <Box>
           <Typography style={{color: '#ff6000'}} variant='subtitle1' align='left'>{getCurrentDate()}</Typography>
       </Box>
       <WeatherInput addCity={addCity} />
-      <WeatherCard geolocation={true} />
-      {cities.map((city, index) => {
-        return <>{city && <WeatherCard key={index} index={index} city={city} removeCity={removeCity} alert={setAlert} />}</>
-      })}
+      <div style={{display: 'flex', flexWrap: 'wrap'}}>
+        <WeatherCard geolocation={true} />
+        {cities.map((city, index) => {
+          return <>{city && <WeatherCard key={index} index={index} city={city} removeCity={removeCity} alert={setAlert} />}</>
+        })}
+      </div>
     </div>
   );
 }

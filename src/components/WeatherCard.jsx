@@ -4,7 +4,8 @@ import { Card, makeStyles, CardContent, CircularProgress, Box, Typography, Butto
 
 const useStyles = makeStyles({
     card: {
-        maxWidth: '350px'
+        maxWidth: '350px',
+        margin: '20px'
     },
     top: {
         display: 'flex',
